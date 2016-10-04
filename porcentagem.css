@@ -1,0 +1,39 @@
+#nomePost{
+	width: 100%;
+    margin-bottom: 15px;
+}
+.add-porcentagem{
+    background: #00ba53;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 3px 10px;
+    border-radius: 4px;
+    color: white;
+    float: right;
+    font-size: 22px;
+    line-height: 25px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.remove-porcentagem{
+    float: right;
+    background: #e02e4f;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 3px 10px;
+    border-radius: 4px;
+    color: white;
+    float: right;
+    font-size: 22px;
+    line-height: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.item{
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.item select{
+    width: auto !important; 
+}

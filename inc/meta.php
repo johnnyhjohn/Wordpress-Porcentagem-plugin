@@ -1,185 +1,108 @@
 <?php  
 
+$custom_meta_fields_porcentagem = $meta->config;
 
-////////////////////////////////////////////////////////////////
-#################### CRIANDO METABOX
-////////////////////////////////////////////////////////////////
-$prefix = 'custom_';
-$custom_meta_fields_porcentagem = array(
-    array(
-        'label' => '',
-        'desc'  => '',
-        'id'    => $prefix.'porcentagem',
-        'type'  => 'porcentagem' // type para ser selecionado no switch
-    )
-);
-
-///////////////////////////////////////////////////////////////////////////////////////////
-function show_porcentagem_meta_box() {
+function metaForm()
+{
     global $custom_meta_fields_porcentagem, $post;
     
-    echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
-     
-    echo '<table class="form-table">';
+    $post_type      = porcentagem_get_options()['porcentagem_post'];
+
+    $post_type_name = get_post_type_object($post_type);
+    $post_type_name = $post_type_name->labels->name;
+
+    $args = array(
+        'post_type'        => $post_type,   
+        'posts_per_page'   => -1
+    );
+
+    $posts = get_posts( $args );
+
+    if($post_type == ""){
+        echo '<div class="updated error fade">
+                <p>' . __('Vá em Configurações e selecione um Tipo de Post.', 'porcentagem') . '</p>
+            </div>';
+        return false;
+    };
+
+    if(empty($posts)){
+        echo '<div class="updated error fade">
+                <p>' . __('Cadastre ao menos um item em '. $post_type_name .'.', 'porcentagem') . '</p>
+            </div>';
+        return false;
+    }
+
+    echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />
+        <div class="form-table meta-porcentagem">';
     foreach ($custom_meta_fields_porcentagem as $field) {
         $meta = get_post_meta($post->ID, $field['id'], true);
-        echo '<tr><td>';
-        switch ($field['type']) {
-            case 'porcentagem':
-                if ($meta) {
-                    $args = array(
-                        'post_type'        => 'obras',
-                        'posts_per_page'   => -1
-                    );
-                
-                    $posts = get_posts( $args );
+        
+        if ($meta) :
 
-                    echo '<div class="item-1">
-                        <h5>Obra:</h5>
-                        <input type="hidden" value="" name="'.$field['id'].'[obra][data]" id="data-alt">
-                        <select data-select="'.$meta['obra']['nome'].'" name="'.$field['id'].'[obra][nome]">';
-                    foreach ($posts as $post) {
-                        echo "<option value='".$post->ID."'>".$post->post_title.'</option>';
-                    };
-                    echo '</select>
-                    <label>Escavação</label>
-                    <select data-select="'.$meta['obra']['escavacao'].'" name="'.$field['id'].'[obra][escavacao]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Fundação</label>
-                    <select data-select="'.$meta['obra']['fundacao'].'" name="'.$field['id'].'[obra][fundacao]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Estrutura</label>
-                    <select data-select="'.$meta['obra']['estrutura'].'" name="'.$field['id'].'[obra][estrutura]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Alvenaria</label>
-                    <select data-select="'.$meta['obra']['alvenaria'].'" name="'.$field['id'].'[obra][alvenaria]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Acabemento Externo</label>
-                    <select data-select="'.$meta['obra']['acabamento_externo'].'" name="'.$field['id'].'[obra][acabamento_externo]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Acabemento Interno</label>
-                    <select data-select="'.$meta['obra']['acabamento_interna'].'" name="'.$field['id'].'[obra][acabamento_interna]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                </div>';
-                } else {
-                    $args = array(
-                        'post_type'        => 'obras',
-                        'posts_per_page'   => -1
-                    );
-                
-                    $posts = get_posts( $args );
-                    
-                    echo '<div class="item-1"><h5>Obra:</h5>
-                    <input type="hidden" value="" name="'.$field['id'].'[obra][data]" id="data-alt">
-                    <select name="'.$field['id'].'[obra][nome]">';
+            $i = 0;
 
-                    var_dump($field['id'].'[obra][data]');
-                    foreach ($posts as $post) {
-                        echo "<option value='".$post->ID."'>".$post->post_title.'</option>';
-                    };
-                    echo '</select>';
-                    echo '
-                    <label>Escavação</label>
-                    <select name="'.$field['id'].'[obra][escavacao]">
+            echo '<div class="items">
+            <h5>'. $post_type_name .'</h5>
+            <input type="hidden" value="" name="'.$field['id'].'[data]" id="data-alt">
+            <select id="nomePost" name="'.$field['id'].'[post_ID]">';
+            foreach ($posts as $post) :
+                echo "<option value='".$post->ID."'>".$post->post_title.'</option>';
+            endforeach;
+            echo '</select>';
+
+            foreach($meta['item'] as $row) :
+                echo '<div class="item item-'. $i .'">
+                    <label>Nome do Campo</label>
+                    <input type="text" name="'.$field['id'].'[item]['.$i.'][nome]" placeholder="Nome do campo" value="'. $row['nome'] .'">
+                    <label>Porcentagem</label>';
+                ?>
+                    <select name="<?php echo $field['id'].'[item]['.$i.'][porcentagem]'; ?>">
+                        <option value="0"   <?php echo ($row['porcentagem'] == '0')   ? 'selected' : ''; ?> >0%</option>
+                        <option value="25"  <?php echo ($row['porcentagem'] == '25')  ? 'selected' : ''; ?>>25%</option>
+                        <option value="50"  <?php echo ($row['porcentagem'] == '50')  ? 'selected' : ''; ?>>50%</option>
+                        <option value="75"  <?php echo ($row['porcentagem'] == '75')  ? 'selected' : ''; ?>>75%</option>
+                        <option value="100" <?php echo ($row['porcentagem'] == '100') ? 'selected' : ''; ?>>100%</option>
+                    </select>
+                    <button type="button" class="remove-porcentagem">-</button>
+                    <button type="button" class="add-porcentagem">+</button>
+                </div>
+        <?php 
+            $i++;   
+            endforeach; // Final do foreach dos items
+        ?>
+        </div>
+        <? else :
+
+            echo '<div class="items">
+                <h5>'. $post_type_name .'</h5>
+                <input type="hidden" value="" name="'.$field['id'].'[data]" id="data-alt">
+                <select id="nomePost" name="'.$field['id'].'[post_ID]">';
+                foreach ($posts as $post) {
+                    echo "<option value='".$post->ID."'>".$post->post_title.'</option>';
+                };
+
+                echo '</select>
+                    <div class="item item-0">
+                        <label>Nome do Campo</label>
+                        <input type="text" name="'.$field['id'].'[item][0][nome]" placeholder="Nome do campo">
+                        <label>Porcentagem</label>'
+                ?>
+                    <select name="<?php echo $field['id'].'[item][0][porcentagem]'; ?>">
                         <option value="0">0%</option>
                         <option value="25">25%</option>
                         <option value="50">50%</option>
                         <option value="75">75%</option>
                         <option value="100">100%</option>
                     </select>
-                    <label>Fundação</label>
-                    <select data-select="'.$field['obra']['fundacao'].'" name="'.$field['id'].'[obra][fundacao]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Estrutura</label>
-                    <select name="'.$field['id'].'[obra][estrutura]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Alvenaria</label>
-                    <select name="'.$field['id'].'[obra][alvenaria]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Acabemento Externo</label>
-                    <select name="'.$field['id'].'[obra][acabamento_externo]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    <label>Acabemento Interno</label>
-                    <select name="'.$field['id'].'[obra][acabamento_interna]">
-                        <option value="0">0%</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                    </select>
-                    </div>';
-                }  
-            break;
-        }             
-        echo '<span class="description">'.$field['desc'].'</span>';  
-        echo '</td></tr>';
+                    <button type="button" class="remove-porcentagem">-</button>
+                    <button type="button" class="add-porcentagem">+</button>
+                </div> <!-- Final .item -->
+            </div> <!-- Final .items -->
+        <?php 
+        endif;
     } // end foreach
-    echo '</table>'; // end table
+    echo '</div>'; // end div
 }
-
-
-
-function add_metabox_porcentagem() {
-    add_meta_box(
-        'custom_meta_box',      // $id
-        'Porcentagens',               // $title - titulo que será mostrado 
-        'show_porcentagem_meta_box',     // $callback - função de calback
-        'porcentagem_projeto',             // $page - post_type que será mostrado
-        'normal',               // $context
-        'high');                // $priority
-}
-add_action( 'admin_init', 'add_metabox_porcentagem' );
-
 function save_porcentagem($post_id) {
     global $custom_meta_fields_porcentagem;
      
@@ -209,4 +132,5 @@ function save_porcentagem($post_id) {
     } // end foreach     
 }
 add_action('save_post', 'save_porcentagem');
+
 ?>

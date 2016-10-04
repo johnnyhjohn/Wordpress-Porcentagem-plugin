@@ -15,7 +15,6 @@ class Porcentagem{
 	*/
 	public $post_type;
 
-
 	/**
 	*
 	*	@author Johnny John
@@ -29,7 +28,6 @@ class Porcentagem{
 	{
 		$this->post_type = porcentagem_get_options()['porcentagem_post'];
 	}
-
 
 	/**
 	*

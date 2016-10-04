@@ -8,22 +8,35 @@
 * Author URI: http://www.finer.com.br/
 **/
 
-// Definição de constantes
 define('PLUGIN_PATH',   plugin_dir_path(__FILE__));
 define('PLUGIN_URL',    plugins_url('', __FILE__));
 
+if(is_admin()) {
+	wp_enqueue_script('porcentagem' , PLUGIN_URL.'/porcentagem.js');
+	function porcentagem_css() {
+		echo '<link rel="stylesheet" type="text/css" href="'. PLUGIN_URL .'/porcentagem.css">';
+	}
+	add_action('admin_enqueue_scripts', 'porcentagem_css');
+}
 
-// Dependências do plugin
 require_once('inc/functions.php');
 require_once('porcentagem.php');
 require_once('custom_meta.php');
 
-
-// Instanciamos a classe principal e em seguida dos custom meta box
 $porcentagem = new Porcentagem();
 $meta 		 = new CustomMeta();
 
-// Invocamos o método de inicialização do Plugin
 $porcentagem->init();
 
+$meta_config = array(
+    array(
+        'label' => '',
+        'desc'  => '',
+        'id'    => 'custom_porcentagem',
+        'type'  => 'porcentagem' // type para ser selecionado no switch
+    )
+);
 
+$meta->setConfig( $meta_config );
+
+include_once('inc/meta.php');

@@ -8,11 +8,10 @@
 	    );
 
 	    $posts = get_posts($args);
-
 	    foreach ($posts as $key => $post) {
 	        $metas = get_post_meta($post->ID, 'custom_porcentagem', true); 
-	        if($metas['obra']['nome'] == $post_id){
-	            return $metas['obra'];
+	        if($metas['post_ID'] == $post_id){
+	            return $metas;
 	        }
 	    }
 	}
@@ -21,7 +20,7 @@
     {
         $options 	= get_option('porcentagem_options');
         
-        $defaults   = array ('porcentagem_post'   		=>  '',);
+        $defaults   = array ('porcentagem_post'	=>  '',);
 
         $options    = wp_parse_args( $options, $defaults );
         
