@@ -22,7 +22,7 @@ e.g.
 		
 		<?php 			
 			$args = array(
-						'post_type' => 'obras',
+						'post_type' => [YOUR_POST_TYPE]',
 			);
 
 			$my_query = new WP_Query($args);
