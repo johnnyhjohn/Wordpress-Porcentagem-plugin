@@ -1,15 +1,14 @@
-# Porcentagem-plugin
-=== Plugin de Porcentagem ===
-Contributors: Johnny John
-Requires at least: 4.4.1
-Tested up to: 4.6.1
+# Plugin de Porcentagem
+#### Contributors: Johnny John
+#### Requires at least: 4.4.1
+#### Tested up to: 4.6.1
 
 
-== Description ==
+### Description
 
 Com este plugin, você poderá adicionar uma seção de porcentagem para seus projetos, podendo dizer em quantos % ele está e em qual tipo de post irá ser utilizado. Podendo usar para mostrar o andamento de projetos, demonstrar suas habilidades em certas áreas, ou qualquer tipo de display que utilize porcentagem.
 
-== Installation ==
+### Installation
 
 e.g.
 
