@@ -1,4 +1,4 @@
-# Plugin de Porcentagem
+# Plugin de Porcentagem para Wordpress
 #### Contributors: Johnny John
 #### Requires at least: 4.4.1
 #### Tested up to: 4.6.1
