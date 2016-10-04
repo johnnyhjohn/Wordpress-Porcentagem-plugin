@@ -18,7 +18,8 @@ e.g.
 3. Vá em 'Configurações' e selecione qual Post_Type( tipo de post) o plugin será relacionado.
 4. Vá no menu 'Porcentagens Projeto' e insira suas porcentagens em algum post.
 5. Para ele aparecer no seu site, use a função '<?php $porcentagem = getPorcentagem($post->ID); ?>' deste modo:
-	Ex : '<?php 			
+	Ex : '
+		<?php 			
 			$args = array(
 						'post_type' => 'obras',
 			);
